@@ -1,4 +1,6 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import HttpLogin from '../rest/http.login';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   View,
   StyleSheet,
@@ -18,12 +20,33 @@ const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    checkToken();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const checkToken = async () => {
+    const token = await AsyncStorage.getItem('AccessToken');
+    if (token) {
+      navigation.navigate('Home');
+    } else {
+      navigation.navigate('Login');
+    }
+  };
+
   const changeEmail = e => {
     setEmail(e);
   };
 
   const changePassword = e => {
     setPassword(e);
+  };
+
+  const handleLogin = async () => {
+    HttpLogin.login(email, password).then(async response => {
+      await AsyncStorage.setItem('AccessToken', response.token);
+      navigation.navigate('Home');
+    });
   };
 
   return (
@@ -67,7 +90,7 @@ const LoginScreen = ({navigation}) => {
           <Button
             title="Login"
             onClick={() => {
-              navigation.navigate('Register');
+              handleLogin();
             }}
           />
         </View>
