@@ -30,7 +30,7 @@ const HomeScreen = ({navigation}) => {
     <View>
       <View>
         <Text h2 style={styles.text}>
-          Homes
+          Home
         </Text>
       </View>
       <FlatList
