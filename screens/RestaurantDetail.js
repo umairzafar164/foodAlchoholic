@@ -49,7 +49,7 @@ const RestaurantDetail = props => {
               }}
             />
           }
-          <View>Add Comment</View>
+          <View>Add Review</View>
           <Input />
         </View>
       ) : null}
