@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import HttpLogin from '../rest/http.login';
 import AsyncStorage from '@react-native-community/async-storage';
 import {View, StyleSheet, FlatList, Image} from 'react-native';
-import {Card, Text} from 'react-native-elements';
+import {Card, Text, Input} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from '../components/Button';
@@ -49,6 +49,8 @@ const RestaurantDetail = props => {
               }}
             />
           }
+          <View>Add Comment</View>
+          <Input />
         </View>
       ) : null}
     </Card>
