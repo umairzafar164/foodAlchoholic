@@ -14,6 +14,8 @@ const image = {
 
 const RestaurantDetail = props => {
   const [restaurant, setResturant] = useState(false);
+  const [review, setReview] = useState('');
+  const [rate, setRate] = useState(0);
   useEffect(() => {
     HttpRestaurant.getRestaurant(props.navigation.state.params.item).then(
       res => {
@@ -23,7 +25,24 @@ const RestaurantDetail = props => {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log('con', restaurant);
+
+  const handleReview = () => {
+    HttpRestaurant.postReview(props.navigation.state.params.item, review);
+  };
+  const changeReview = e => {
+    setReview(e);
+  };
+
+  const onCheckLimit = value => {
+    if (Number.isNaN(value)) {
+      setRate(0); //setter for state
+    } else if (value > 10) {
+      setRate(10);
+    } else {
+      setRate(value);
+    }
+  };
+  console.log('con', rate);
   return (
     <Card>
       {restaurant ? (
@@ -49,8 +68,48 @@ const RestaurantDetail = props => {
               }}
             />
           }
-          <View>Add Review</View>
-          <Input />
+          <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+            }}
+          />
+          <View>
+            <FlatList
+              data={restaurant.reviews}
+              renderItem={({item}) => {
+                return (
+                  <View>
+                    <Text>{item.review}</Text>
+                  </View>
+                );
+              }}
+            />
+            <Text h4>Add Review</Text>
+            <Input
+              placeholder="Review"
+              type="text"
+              onChangeText={changeReview}
+              onEndEditing={() => {
+                setReview(review);
+              }}
+              autoCapitalize={false}
+            />
+          </View>
+          <Button title={'Post'} onClick={() => handleReview()} />
+          <View>
+            <Text>Rate? </Text>
+            <Input
+              placeholder="Out of 10"
+              value={rate}
+              onChangeText={onCheckLimit}
+              onEndEditing={() => {
+                setRate(rate);
+              }}
+              otherProps
+            />
+            <Text>{restaurant.rating}</Text>
+          </View>
         </View>
       ) : null}
     </Card>

@@ -27,6 +27,7 @@ const LoginScreen = ({navigation}) => {
 
   const checkToken = async () => {
     const token = await AsyncStorage.getItem('AccessToken');
+    console.log('toekn', token);
     if (token) {
       navigation.navigate('Home');
     } else {

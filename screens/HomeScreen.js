@@ -22,16 +22,23 @@ const HomeScreen = ({navigation}) => {
   }, []);
   const handleLogout = async () => {
     AsyncStorage.removeItem('AccessToken');
-    console.log('token removed', await AsyncStorage.getItem('AccessToken'));
     navigation.navigate('Login');
   };
-
+  console.log('res', restaurants);
   return (
     <View>
       <View>
         <Text h2 style={styles.text}>
           Home
         </Text>
+      </View>
+      <View style={{paddingTop: 30}}>
+        <Button
+          title="Logout"
+          onClick={() => {
+            handleLogout();
+          }}
+        />
       </View>
       <FlatList
         data={restaurants}
@@ -58,14 +65,6 @@ const HomeScreen = ({navigation}) => {
           );
         }}
       />
-      <View style={{paddingTop: 30}}>
-        <Button
-          title="Logout"
-          onClick={() => {
-            handleLogout();
-          }}
-        />
-      </View>
     </View>
   );
 };

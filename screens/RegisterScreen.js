@@ -9,6 +9,8 @@ import {Input, Text} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from '../components/Button';
+import HttpLogin from '../rest/http.login';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const image = {
   uri: 'https://thumbs.dreamstime.com/b/fork-plate-spoon-icon-vector-fork-plate-spoon-icon-vector-illustration-102307168.jpg',
@@ -29,6 +31,19 @@ const RegisterScreen = ({navigation}) => {
 
   const changePassword = e => {
     setPassword(e);
+  };
+
+  const handleRegister = () => {
+    console.log('here');
+    HttpLogin.register(fullname, email, password)
+      .then(res => {
+        console.log('res', res);
+      })
+      .catch(async err => {
+        console.log(err);
+        const token = await AsyncStorage.setItem('AccessToken', err.data.token);
+        navigation.navigate('Login');
+      });
   };
 
   return (
@@ -88,18 +103,17 @@ const RegisterScreen = ({navigation}) => {
           <Button
             title="Register"
             onClick={() => {
-              navigation.navigate('Login');
+              handleRegister();
             }}
           />
         </View>
-
         <View style={{marginTop: 20}}>
           <Text style={styles.text1}>
             Already Registered ?{' '}
             <Text
               style={styles.text2}
               onPress={() => {
-                navigation.navigate('Login');
+                //navigation.navigate('Login');
               }}>
               Login
             </Text>

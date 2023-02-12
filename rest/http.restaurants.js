@@ -6,8 +6,13 @@ class Httprestaurant extends HttpBase {
     return this.GET(`${AppConstants.baseURL}/items/resturants`);
   };
   getRestaurant = id => {
-    console.log('http');
     return this.GET(`${AppConstants.baseURL}/items/resturants/${id}`);
+  };
+  postReview = (id, resturantReviews) => {
+    console.log('http', id, resturantReviews);
+    return this.Post(`${AppConstants.baseURL}/items/resturants/reviews/${id}`, {
+      resturantReviews,
+    });
   };
 }
 const HttpRestaurant = new Httprestaurant();

@@ -8,7 +8,7 @@ const config = {
   headers: {
     'Content-Type': 'application/json',
     authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjlmNDcxOWViZWU0YTcxZmJmZWJiMyIsImlhdCI6MTY3MzEzMTEyMX0.H8K8FQ7_tLa8dTW0bQ7L66pKZvUfOTs92iS_NMGczrw',
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTg2OGQ1MzFkYWMxMTNiMDcwNDVkYiIsImlhdCI6MTY3NjE3NTU3M30.b6pipFOiGlWKMkXc4yZiTmF8Igv5jhL7d5itFfV3dOw',
   },
 };
 
@@ -26,6 +26,13 @@ export default class HttpBase {
       .get(url, config)
       .then(this.successHandlerBase.bind(this))
       .catch(this.errorHandlerBase.bind(this));
+  };
+
+  Post = (url, data) => {
+    console.log(url, 'dd', data);
+    return axios
+      .post(url, data, config)
+      .then(this.successHandlerBase.bind(this));
   };
 
   successHandlerBase = response => {
