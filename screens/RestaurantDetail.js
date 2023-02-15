@@ -100,7 +100,7 @@ const RestaurantDetail = props => {
           <View>
             <Text>Rate? </Text>
             <Input
-              placeholder="Out of 10"
+              placeholder="Out of 5"
               value={rate}
               onChangeText={onCheckLimit}
               onEndEditing={() => {
