@@ -16,11 +16,16 @@ const RestaurantDetail = props => {
   const [restaurant, setResturant] = useState(false);
   const [review, setReview] = useState('');
   const [rate, setRate] = useState(0);
+  const [show, setShow] = useState(false);
+  const [restaurantRating, setResturantRating] = useState(0);
   useEffect(() => {
     HttpRestaurant.getRestaurant(props.navigation.state.params.item).then(
       res => {
         setResturant(res);
-        console.log('reee', typeof res.name);
+        let rating = 0;
+        res.ratings.map(r => (rating += r.rate));
+        console.log(rating);
+        setResturantRating(rating / res.ratings.length);
       },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,20 +34,24 @@ const RestaurantDetail = props => {
   const handleReview = () => {
     HttpRestaurant.postReview(props.navigation.state.params.item, review);
   };
+
+  const handleRate = () => {
+    if (rate > 5 || rate < 0) {
+      setShow(true);
+    } else {
+      HttpRestaurant.postRate(props.navigation.state.params.item, rate);
+      setShow(false);
+    }
+  };
+
   const changeReview = e => {
     setReview(e);
   };
 
-  const onCheckLimit = value => {
-    if (Number.isNaN(value)) {
-      setRate(0); //setter for state
-    } else if (value > 10) {
-      setRate(10);
-    } else {
-      setRate(value);
-    }
+  const changeRate = e => {
+    setRate(e);
   };
-  console.log('con', rate);
+
   return (
     <Card>
       {restaurant ? (
@@ -95,21 +104,25 @@ const RestaurantDetail = props => {
               }}
               autoCapitalize={false}
             />
-          </View>
-          <Button title={'Post'} onClick={() => handleReview()} />
-          <View>
+            <Text>{restaurantRating}</Text>
             <Text>Rate? </Text>
             <Input
               placeholder="Out of 5"
               value={rate}
-              onChangeText={onCheckLimit}
+              onChangeText={changeRate}
               onEndEditing={() => {
                 setRate(rate);
               }}
               otherProps
             />
-            <Text>{restaurant.rating}</Text>
+            {show && (
+              <Text h6 style={styles.warning}>
+                Rating should be between 1-5
+              </Text>
+            )}
+            <Button title={'Rate'} onClick={() => handleRate()} />
           </View>
+          <Button title={'Post'} onClick={() => handleReview()} />
         </View>
       ) : null}
     </Card>
@@ -148,6 +161,9 @@ const styles = StyleSheet.create({
   },
   mb10: {
     marginBottom: 10,
+  },
+  warning: {
+    color: 'red',
   },
 });
 

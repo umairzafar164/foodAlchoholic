@@ -14,6 +14,12 @@ class Httprestaurant extends HttpBase {
       resturantReviews,
     });
   };
+  postRate = (id, resturantRate) => {
+    console.log('http', id, resturantRate);
+    return this.Post(`${AppConstants.baseURL}/items/resturants/ratings/${id}`, {
+      rate: resturantRate,
+    });
+  };
 }
 const HttpRestaurant = new Httprestaurant();
 export default HttpRestaurant;
